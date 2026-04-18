@@ -1,0 +1,40 @@
+{
+  "skill_name": "operations-manual-hierarchy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我在用 Cursor。请把工作手册技能里这段说明当成一条新知识存进去：「Cursor 下批量写入前先自检是否可用 Task 子代理；若可用则按分片并行，否则主 Agent 按分片顺序写入，分片内只写 entry、不手改 index，最后由主 Agent 跑一次 rebuild_hierarchy_index.py。」库根目录用当前工作区下的 operations_manual/hierarchy（若不存在可先按技能目录结构创建）。",
+      "expected_output": "在 {WORKSPACE}/operations_manual/hierarchy 下创建或更新随机命名的 category/subcategory/entry；entry 的 frontmatter 含合理 summary（约 50～120 字）及必要字段；未直接编辑任何 index.md 的映射表/概述区块；在合适时机用 scripts/rebuild_hierarchy_index.py（或等价命令）刷新索引。",
+      "files": [],
+      "expectations": [
+        "写入路径以 operations_manual/hierarchy 为根，且使用 category_*/subcategory_* 风格目录（随机 ID 亦可）",
+        "新建或更新的条目文件为 entry_*.md，frontmatter 含 summary 字段",
+        "明确执行或提议执行 rebuild_hierarchy_index.py（或带 --root 的等价调用），而非手改 index.md",
+        "若涉及批量/分片语境，应体现对 Cursor 下 Task 可用性的自检或顺序分片降级说明"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Cursor 里请模拟「模式二」批量导入的前半段：我有一份虚构的多段落操作规程（你自行编 3 段、每段不同一级主题），要求写入工作手册。不要真的写入磁盘——只输出：① 解析后的一级/二级分类草案；② 分片策略选 A 还是 B 及理由；③ 若继续执行，写给用户的确认展示大纲（含分片列表）；④ 说明在 Cursor 下你会先检查 Task 再选并行还是顺序。",
+      "expected_output": "不产生真实文件时，仍以技能流程作答：多一级则策略 A、单一级则策略 B；给出用户可见的确认大纲；写明子 Agent 能力自检（Task）与顺序分片降级。",
+      "files": [],
+      "expectations": [
+        "根据「多个一级分类」判定使用策略 A（按一级分片），并说明若只有一个一级则改为策略 B",
+        "包含面向用户的「先确认再写入」计划结构（分类、分片、条目规模或示例），而非直接开始写文件",
+        "明确写出在 Cursor 上会检查 Task（generalPurpose）是否可用，并区分并行与主 Agent 顺序分片",
+        "提及分片执行体不写 index.md、汇总阶段由重建脚本统一刷新索引"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "当前仓库里已有 operations_manual/hierarchy（没有就说没有）。请只做维护向说明：若要重建全套 index.md，在 Windows PowerShell 下应如何调用本技能包内的 rebuild_hierarchy_index.py？库根目录占位符 {WORKSPACE} 在实际执行时你怎么替换？输出一条可复制命令示例（路径用我当前工作区 e:\\Myproject\\OperationsManual）。",
+      "expected_output": "给出面向 Windows 的 python 调用示例，--root 指向实际库根；说明 {WORKSPACE} 在本机对应为 e:\\Myproject\\OperationsManual，库根为 ...\\operations_manual\\hierarchy。",
+      "files": [],
+      "expectations": [
+        "命令中包含 rebuild_hierarchy_index.py 且使用 --root（或脚本文档认可的参数）指向 operations_manual\\hierarchy 或等价绝对路径",
+        "解释 {WORKSPACE} 与当前工作区根目录的对应关系",
+        "命令可在 PowerShell 下作为单行或简短多行复制执行（避免含糊的「运行脚本」而无具体路径）"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "query": "帮我查查工作手册里有没有关于数据库备份的内容",
+    "should_trigger": true
+  },
+  {
+    "query": "在手册里找一下业务核心指标的定义",
+    "should_trigger": true
+  },
+  {
+    "query": "读取 entry_a1b2c3d4",
+    "should_trigger": true
+  },
+  {
+    "query": "列出工作手册有哪些分类",
+    "should_trigger": true
+  },
+  {
+    "query": "搜索工作手册中关于 Python 异步编程的条目",
+    "should_trigger": true
+  },
+  {
+    "query": "手册里关于巡检流程的操作规程在哪里",
+    "should_trigger": true
+  },
+  {
+    "query": "帮我总结一下手册中微服务架构相关的内容",
+    "should_trigger": true
+  },
+  {
+    "query": "工作手册里有没有带「数据库」标签的条目",
+    "should_trigger": true
+  },
+  {
+    "query": "查看技术规程分类下有哪些子分类和条目",
+    "should_trigger": true
+  },
+  {
+    "query": "帮我找找手册中关于 Kafka 消息队列的最佳实践",
+    "should_trigger": true
+  },
+  {
+    "query": "按关键词找一下手册里有没有留存率相关的条目",
+    "should_trigger": true
+  },
+  {
+    "query": "工作手册里关于 Redis 缓存配置的文档是什么时候更新的",
+    "should_trigger": true
+  },
+  {
+    "query": "把这篇文档存入工作手册",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我重建工作手册的索引",
+    "should_trigger": false
+  },
+  {
+    "query": "在工作手册中新建一个「运维」分类",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我写一个 Python 脚本解析 CSV 文件",
+    "should_trigger": false
+  },
+  {
+    "query": "把这段操作规程导入到工作手册里",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我修改 category_abc12345 目录下的索引",
+    "should_trigger": false
+  },
+  {
+    "query": "今天天气怎么样",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我批量导入这些文档到工作手册",
+    "should_trigger": false
+  }
+]

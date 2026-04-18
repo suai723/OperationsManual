@@ -1,0 +1,37 @@
+name: operations-manual-reader
+version: 4.0.0
+description: 智能工作手册只读检索系统
+author: 掉渣的小桃酥
+created: 2026-02-27
+updated: 2026-04-18
+
+# 工作手册存储路径配置
+# {WORKSPACE} 为 Agent 当前工作区根目录，Windows 下为工作区绝对路径
+workbook:
+  root_dir: "{WORKSPACE}/operations_manual/hierarchy/"
+  index_file: "index.md"
+  category_prefix: "category_"
+  subcategory_prefix: "subcategory_"
+  entry_prefix: "entry_"
+
+# 并行检索配置
+retrieval:
+  parallel_workers: 3
+  search_strategy:
+    - index_grep
+    - metadata
+    - fulltext
+  max_results: 20
+  summary_length: 80
+
+# 输出配置
+output:
+  table:
+    border: true
+    header: true
+  icons:
+    category: 📁
+    subcategory: 📂
+    entry: 📄
+    tag: 🏷️
+    star: ⭐
