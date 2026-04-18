@@ -6,13 +6,17 @@
 
 ## 演示视频
 
-演示文件位于 **`assets/demo.mp4`**。将仓库推送到 GitHub 后，在仓库首页 README 中即可用下方播放器直接观看（无需外链托管）。
+演示文件位于 **`assets/demo.mp4`**。
 
-**Demo video:** the recording is at [`assets/demo.mp4`](assets/demo.mp4). After you push to GitHub, the player below works on the repository README page.
+**为何 README 里看不到内嵌播放器：** GitHub 在渲染 README 时会清理/忽略其中的 `<video>` 等标签，因此**无法在仓库首页内嵌播放**；这与文件是否已提交无关。要在网页里观看，请打开仓库里的视频文件页，GitHub 会对 `.mp4` 提供自带的预览播放器。
 
-<video src="./assets/demo.mp4" controls width="100%" playsinline>
-  您的浏览器不支持 HTML5 视频，请<a href="./assets/demo.mp4">点击下载</a>。
-</video>
+**[▶ 在 GitHub 中打开并播放 demo.mp4](./assets/demo.mp4)**（进入文件页后即可播放或下载。）
+
+若需直链（例如嵌入其它页面或下载器），可将下列地址中的 `main` 换成你的默认分支名：  
+`https://github.com/suai723/OperationsManual/raw/main/assets/demo.mp4`（本仓库示例；若你 Fork 了仓库，请把 `suai723/OperationsManual` 换成自己的 `用户名/仓库名`。）
+
+**Demo video:** GitHub README sanitization removes inline `<video>` tags, so there is no embedded player on the repo home page. **Open the file on GitHub** for built-in preview: [`assets/demo.mp4`](./assets/demo.mp4). Raw URL pattern: `https://github.com/OWNER/REPO/raw/BRANCH/assets/demo.mp4`.
+
 
 ---
 
