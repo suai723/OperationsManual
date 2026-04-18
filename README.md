@@ -1,6 +1,18 @@
 # Operations Manual Skills
 
-**Languages:** [场景介绍](#场景介绍) · [简体中文](#简体中文) · [English](#english)
+**Languages:** [场景介绍](#场景介绍) · [演示视频](#演示视频) · [简体中文](#简体中文) · [English](#english)
+
+---
+
+## 演示视频
+
+演示文件位于 **`assets/demo.mp4`**。将仓库推送到 GitHub 后，在仓库首页 README 中即可用下方播放器直接观看（无需外链托管）。
+
+**Demo video:** the recording is at [`assets/demo.mp4`](assets/demo.mp4). After you push to GitHub, the player below works on the repository README page.
+
+<video src="./assets/demo.mp4" controls width="100%" playsinline>
+  您的浏览器不支持 HTML5 视频，请<a href="./assets/demo.mp4">点击下载</a>。
+</video>
 
 ---
 
@@ -70,6 +82,34 @@
 | 维护操作 | 重建索引、统计、备份等见 [`operations-manual-hierarchy/references/maintenance.md`](operations-manual-hierarchy/references/maintenance.md) |
 
 **版本与变更**：以 [`operations-manual-hierarchy/SKILL.md`](operations-manual-hierarchy/SKILL.md) 元数据为准；[`operations-manual-hierarchy/log.md`](operations-manual-hierarchy/log.md)。
+
+### 示例
+
+以下话术可在启用 **Operations Manual Hierarchy** 与 **Operations Manual Reader** 技能后，直接作为用户提示词使用（具体写入与检索由 Agent 按技能规范执行）。
+
+#### 创建工作手册
+
+帮我创建一个工作手册，我想先构建一级目录：
+
+1. **时事新闻**：用于存储不同类型的新闻消息，让 Agent 可以根据场景随时调取。
+2. **网站收藏**：用于收藏不同类型的网站，方便 Agent 随时查阅，并根据用户需求调取。
+3. **工作文档**：用于记录个人的工作文档摘要和链接；当用户想查阅时，Agent 可以快速调取。
+4. **我的偏好**：用于记录个人使用偏好，以及 Agent 执行错误的记录，让 Agent 在执行同类任务时能根据偏好与历史错误及时修正。
+
+#### 创建「时事新闻」的二级分类
+
+1. 国际政治军事新闻  
+2. 国内政治军事新闻  
+3. 国内外科技新闻  
+4. 国内外娱乐新闻  
+
+#### 存入工作手册
+
+帮我把 [伊朗正在审议美方新提议 尚未回应（央视新闻）](https://news.cctv.com/2026/04/18/ARTIeyzCqBIqppYDlZMcuW1q260418.shtml?spm=C94212.PBi4fu284lJm.EqrnPf7WDfbU.13) 存入工作手册。
+
+#### 查询工作手册
+
+帮我从工作手册中看看，最近的美伊关系。
 
 ---
 
