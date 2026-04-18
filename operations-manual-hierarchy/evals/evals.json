@@ -3,13 +3,13 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "我在用 Cursor。请把工作手册技能里这段说明当成一条新知识存进去：「Cursor 下批量写入前先自检是否可用 Task 子代理；若可用则按分片并行，否则主 Agent 按分片顺序写入，分片内只写 entry、不手改 index，最后由主 Agent 跑一次 rebuild_hierarchy_index.py。」库根目录用当前工作区下的 operations_manual/hierarchy（若不存在可先按技能目录结构创建）。",
-      "expected_output": "在 {WORKSPACE}/operations_manual/hierarchy 下创建或更新随机命名的 category/subcategory/entry；entry 的 frontmatter 含合理 summary（约 50～120 字）及必要字段；未直接编辑任何 index.md 的映射表/概述区块；在合适时机用 scripts/rebuild_hierarchy_index.py（或等价命令）刷新索引。",
+      "prompt": "我在用 Cursor。请把工作手册技能里这段说明当成一条新知识存进去：「Cursor 下批量写入前先自检是否可用 Task 子代理；若可用则按分片并行，否则主 Agent 按分片顺序写入，分片内只写 entry，写完后主 Agent 统一更新各级 index.md。」库根目录用当前工作区下的 operations_manual/hierarchy（若不存在可先按技能目录结构创建）。",
+      "expected_output": "在 {WORKSPACE}/operations_manual/hierarchy 下创建或更新随机命名的 category/subcategory/entry；entry 的 frontmatter 含必要字段；写入条目后由模型按索引格式增量更新各级 index.md；使用 gen_random_id.py 生成不冲突的目录/文件名。",
       "files": [],
       "expectations": [
-        "写入路径以 operations_manual/hierarchy 为根，且使用 category_*/subcategory_* 风格目录（随机 ID 亦可）",
-        "新建或更新的条目文件为 entry_*.md，frontmatter 含 summary 字段",
-        "明确执行或提议执行 rebuild_hierarchy_index.py（或带 --root 的等价调用），而非手改 index.md",
+        "写入路径以 operations_manual/hierarchy 为根，且使用 category_*/subcategory_* 风格目录（随机 ID）",
+        "新建或更新的条目文件为 entry_*.md，frontmatter 含必要字段",
+        "写入条目后由模型直接更新对应层级的 index.md（三级→二级→一级），而非调用重建脚本",
         "若涉及批量/分片语境，应体现对 Cursor 下 Task 可用性的自检或顺序分片降级说明"
       ]
     },
@@ -22,18 +22,19 @@
         "根据「多个一级分类」判定使用策略 A（按一级分片），并说明若只有一个一级则改为策略 B",
         "包含面向用户的「先确认再写入」计划结构（分类、分片、条目规模或示例），而非直接开始写文件",
         "明确写出在 Cursor 上会检查 Task（generalPurpose）是否可用，并区分并行与主 Agent 顺序分片",
-        "提及分片执行体不写 index.md、汇总阶段由重建脚本统一刷新索引"
+        "提及策略 A 子 Agent 可更新本分类下二级/三级索引、策略 B 所有索引由主 Agent 汇总后统一更新"
       ]
     },
     {
       "id": 3,
-      "prompt": "当前仓库里已有 operations_manual/hierarchy（没有就说没有）。请只做维护向说明：若要重建全套 index.md，在 Windows PowerShell 下应如何调用本技能包内的 rebuild_hierarchy_index.py？库根目录占位符 {WORKSPACE} 在实际执行时你怎么替换？输出一条可复制命令示例（路径用我当前工作区 e:\\Myproject\\OperationsManual）。",
-      "expected_output": "给出面向 Windows 的 python 调用示例，--root 指向实际库根；说明 {WORKSPACE} 在本机对应为 e:\\Myproject\\OperationsManual，库根为 ...\\operations_manual\\hierarchy。",
+      "prompt": "当前仓库里已有 operations_manual/hierarchy（没有就说没有）。请只做维护向说明：若索引与实际文件不一致，应如何重建全套 index.md？说明各级索引的重建顺序和格式要求。",
+      "expected_output": "说明由 Agent 手动扫描全库 entry_*.md 后按索引格式规范依次重写三级→二级→一级 index.md；提到使用 gen_random_id.py 生成新目录名（若需创建）；说明概要字段的混合维护策略。",
       "files": [],
       "expectations": [
-        "命令中包含 rebuild_hierarchy_index.py 且使用 --root（或脚本文档认可的参数）指向 operations_manual\\hierarchy 或等价绝对路径",
-        "解释 {WORKSPACE} 与当前工作区根目录的对应关系",
-        "命令可在 PowerShell 下作为单行或简短多行复制执行（避免含糊的「运行脚本」而无具体路径）"
+        "描述 Agent 扫描 category_*/subcategory_*/entry_*.md 并按 index-formats.md 格式重写各级 index.md 的流程",
+        "说明重建顺序为三级索引→二级索引→一级索引",
+        "提及概要字段的稳定优先策略（已有可用概要保留，为空或过泛的重新生成）",
+        "不提及 rebuild_hierarchy_index.py 脚本"
       ]
     }
   ]

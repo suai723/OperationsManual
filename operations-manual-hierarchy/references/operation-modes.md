@@ -10,33 +10,51 @@
 
 2. **检查工作空间**：确保在正确的工作空间中执行操作。工作手册的根目录应为 `{WORKSPACE}/operations_manual/`，所有操作都应在此路径下进行。
 
-3. **检查一级索引**：读取 `{WORKSPACE}/operations_manual/hierarchy/index.md`；若文件不存在，先创建目录结构
+3. **检查一级索引**：读取 `{WORKSPACE}/operations_manual/hierarchy/index.md`；若文件不存在，先创建目录及空索引文件
 
-4. **查找或创建一级分类目录**：在一级索引中查找一级分类是否存在；不存在则生成随机 ID，创建 `category_<ID>/` 目录
+4. **查找或创建一级分类目录**：在一级索引中查找一级分类是否存在；不存在则按「命名规则」使用脚本生成随机 ID，创建 `category_<ID>/` 目录和 `category_<ID>/index.md`，并更新一级索引（包含该一级分类的「概要」）
 
-5. **查找或创建二级分类目录**：查找对应一级分类下的二级分类是否存在；不存在则生成随机 ID，创建 `subcategory_<ID>/` 目录
+5. **查找或创建二级分类目录**：读取对应一级分类的 `index.md`；不存在则按「命名规则」使用脚本生成随机 ID，创建 `subcategory_<ID>/` 目录和 `subcategory_<ID>/index.md`（三级索引，初始为空模板），并更新二级索引（包含该二级分类的「概要」）
 
 6. **去重检查**：读取目标二级分类目录下已有的条目文件，检查是否存在高度相似的内容（判断标准见「去重规则」）
 
-7. **生成条目文件**：生成随机文件 ID，在二级分类目录下创建 `entry_<ID>.md`，写入标准格式内容（frontmatter 中必须包含 `summary` 字段，由模型理解内容后撰写 50～120 字概述）
+7. **生成条目文件**：按「命名规则」使用脚本生成随机文件 ID，在二级分类目录下创建 `entry_<ID>.md`，写入标准格式内容
 
-8. **重建索引**：运行 `python scripts/rebuild_hierarchy_index.py --root <库根目录>`，脚本从各 entry 的 `summary` 字段组装索引概述区块，同时刷新映射表与统计数据
+8. **更新三级索引**：在目标 `subcategory_<ID>/index.md` 的条目清单表中追加本条目的一行记录（ID / 标题 / 概要 / 重要度 / 标签 / 创建时间）；若该三级索引文件不存在则先创建标准模板再追加。概要基于条目 frontmatter 的 title + tags + 正文前 100 字提炼（20–50 字）
+9. **更新二级索引**：更新 `category_<ID>/index.md` 中该二级分类的条目数和最后更新时间；并按需维护该二级分类「概要」
+10. **更新一级索引**：更新 `hierarchy/index.md` 的条目总数和最后更新时间；并按需维护一级分类「概要」
+11. **按需维护各层概要**：检查一/二/三级索引的概要字段是否需更新（稳定优先原则，仅在为空、明显过泛或主题偏移时更新）
 
-9. **更新影子摘要库**：为写入的条目生成一段 100~200 字的语义摘要，使用泛式影子摘要模板，追加 (append) 写入 `{WORKSPACE}/memory/operations_manual_shadow_index.md`。
+12. **更新影子摘要库**：为写入的条目生成一段 100~200 字的语义摘要，使用泛式影子摘要模板，追加 (append) 写入 `{WORKSPACE}/memory/operations_manual_shadow_index.md`。
    ```markdown
    ### [ID: {entry_id}] {条目主标题}
    - 📂 **归属**: {一级分类} > {二级分类}
+   - 📄 **路径**: operations_manual/hierarchy/{category_dir}/{subcategory_dir}/{entry_id}.md
    - 🏷️ **标签**: {tag1}, {tag2}...
    - 🧠 **语义摘要**: {100~200字核心业务描述...}
    ```
 
-10. **向用户反馈**：
+13. **向用户反馈**：
    ```
    ✅ 条目已存储
    📂 路径：operations_manual/hierarchy/category_a1b2c3d4/subcategory_i9j0k1l2/entry_q7r8s9t0.md
    🏷️ 分类：技术规程 > Python编程
    🆔 条目ID：entry_q7r8s9t0
    ```
+
+#### 索引概要维护（混合策略）
+
+目标是让 Agent 仅通过扫索引就能判断该目录大概包含什么，避免为了确认内容而盲读目录与条目文件。
+
+- **长度**：30–60 字，1 句话为主。
+- **二级概要生成（默认自动）**：基于该二级分类下的条目标题、tags、条目内语义摘要抽样归纳，描述该目录通常包含什么与常见主题关键词。
+- **三级概要生成（默认自动）**：基于每个条目的 frontmatter（title + tags）和正文前 100 字提炼，描述单个条目的核心内容（20–50 字），写入三级索引的「概要」列。详见[索引文件格式](index-formats.md)中的「三级索引概要专用规范」。
+- **一级概要生成（默认自动）**：基于其下多个二级概要聚合归纳，描述该一级分类总体覆盖范围与典型内容。
+- **置信度低才追问用户**（只问 1 句并落盘到概要列）：
+  - 该分类条目数过少（例如 < 2）且无既有概要；或
+  - 自动结果只能给出"杂项/其他/通用/综合"等泛化描述；或
+  - 主题高度离散，无法用一句话稳定描述。
+- **稳定优先**：概要不要求每次写入都重写；仅在概要为空、明显过泛或新增内容导致主题发生明显偏移时更新。
 
 ### 【模式二：文档批量解析存储】
 
@@ -48,9 +66,9 @@
 
 3. **分类推断**：为每个条目确定最合适的一级分类和二级分类
 
-4. **执行存储**：按模式一的流程批量存储每个条目
+4. **执行存储**：按模式一的流程批量存储每个条目（每写入一个条目后同步更新对应的三级索引）
 
-5. **分片写入**：对于大量条目，按分片策略处理——有子 Agent 能力时并行，否则主 Agent 顺序分片写入（见「并行处理策略」）
+5. **并行优化**：对于大量条目，采用子agent并行处理（见「并行处理策略」）
 
 ---
 
@@ -78,8 +96,6 @@
    test -d "$WORKSPACE/operations_manual" || mkdir -p "$WORKSPACE/operations_manual"
 
    test -d "$WORKSPACE/operations_manual/hierarchy" || mkdir -p "$WORKSPACE/operations_manual/hierarchy"
-
-   test -f "$WORKSPACE/operations_manual/hierarchy/index.md" || touch "$WORKSPACE/operations_manual/hierarchy/index.md"
    ```
 
 2. **错误处理**：如果在操作过程中发现路径不正确，立即停止操作并向用户报告问题

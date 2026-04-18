@@ -4,25 +4,27 @@
 
 ```
 {WORKSPACE}/operations_manual/hierarchy/
-├── index.md                            # 【一级索引】记录所有一级分类映射与概述（脚本生成）
-├── category_<8位随机字母数字>/          # 一级分类目录
-│   ├── index.md                       # 【二级索引】记录该分类下所有二级分类映射与概述（脚本生成）
-│   └── subcategory_<8位随机字母数字>/   # 二级分类目录
-│       ├── index.md                   # 【二级分类目录索引】列出该目录下所有条目文件（脚本生成）
+├── index.md                            # 【一级索引】分类映射表（Agent 维护）
+├── category_<8位随机字母数字>/          # 一级分类目录（可暂无 subcategory_*）
+│   ├── index.md                       # 【二级索引】二级分类映射表（Agent 维护）
+│   └── subcategory_<8位随机字母数字>/   # 二级分类目录（可暂无 entry_*）
+│       ├── index.md                   # 【三级索引】条目清单（Agent 维护）
 │       └── entry_<8位随机字母数字>.md  # 具体条目文件
 ```
 
 **根目录默认为 `{WORKSPACE}/operations_manual/hierarchy/`，不存在时自动创建。**
 
-> 目录名中 `category_` 对应一级分类，`subcategory_` 对应二级分类。三级 `index.md`（根、`category_*`、`subcategory_*`）均由 `scripts/rebuild_hierarchy_index.py` 自动生成，包含映射表和概述区块，禁止手动编辑。
+> 目录名中 `category_` 对应一级分类，`subcategory_` 对应二级分类。各级 `index.md` 由模型按 [索引文件格式](index-formats.md) 直接创建和增量更新，脚本仅负责生成不冲突的随机目录/文件名（`scripts/gen_random_id.py`）。
+>
+> **空目录支持**：初始化一级或二级分类时，只需创建目录并生成含标题与表头的 `index.md`，无需创建占位条目（entry）。后续写入条目时由模型增量更新索引。
 
 ### 库根目录卫生
 
 `{WORKSPACE}/operations_manual/hierarchy/` 根下**仅允许**存在：
 - `category_*` 目录（一级分类）
-- `index.md`（由重建脚本生成）
+- `index.md`（由 Agent 按索引格式维护）
 
-以下内容**均属异常**，发现后应立即删除并重新运行 `rebuild_hierarchy_index.py`：
+以下内容**均属异常**，发现后应立即删除并由 Agent 按 [维护操作](maintenance.md) 章节重建索引：
 - `entries/`、`scripts/`、`data/` 等非 `category_*` 子目录
 - `index.json`、`index.yaml` 等非 `index.md` 的索引文件
 - 任何不符合 `category_<8位>` 命名规范的目录

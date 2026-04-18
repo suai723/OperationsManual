@@ -1,5 +1,18 @@
 # operations-manual-hierarchy 版本变更记录
 
+## v1.9.0 - 2026-04-18
+
+- **破坏性变更**：移除 `rebuild_hierarchy_index.py` 重建脚本，各级 `index.md` 改由模型按 `index-formats.md` 直接创建和增量更新
+- 新增 `scripts/gen_random_id.py`（与 workbook-hierarchy 一致），专责生成不冲突的随机目录/文件名
+- `index-formats.md` 全面对齐 workbook-hierarchy 格式：一级「分类映射表」、二级「二级分类映射表」、三级「条目清单」，新增概要字段规范与三级索引概要专用规范
+- `naming-rules.md` 改为推荐通过 `{SKILL_DIR}/scripts/gen_random_id.py` 生成 ID
+- `operation-modes.md` 单条模式改为增量索引更新流程（三级→二级→一级），新增索引概要混合维护策略，影子摘要模板补全 `📄 **路径**` 字段
+- `parallel-processing.md` 策略 A 子 Agent 可更新本分类下二级/三级索引；策略 B 子 Agent 仅写 entry，主 Agent 统一更新全部索引；汇总步骤从「运行重建脚本」改为「按策略更新对应层级索引」
+- `directory-structure.md` 注释改为「Agent 维护」，异常清理改为「按维护章节重建」
+- `maintenance.md` 重建索引改为 Agent 手动扫描并按格式重写
+- `error-handling.md` 所有「重建脚本」引用改为「按维护操作重建索引」
+- 条目 frontmatter 移除强制 `summary` 字段，三级索引概要由模型在写入索引时从 title + tags + 正文提炼
+
 ## v1.8.0 - 2026-04-18
 
 - 三级索引（根 / `category_*` / `subcategory_*`）的 `index.md` 格式由「双表（映射表 + 概述）」统一为**单表**，每行一条 entry，新增「相对路径」列（相对库根），方便 Agent 与人类直接定位文件
