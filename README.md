@@ -1,6 +1,18 @@
 # Operations Manual Skills
 
-**Languages:** [简体中文](#简体中文) · [English](#english)
+**Languages:** [场景介绍](#场景介绍) · [简体中文](#简体中文) · [English](#english)
+
+---
+
+## 场景介绍
+
+### 中文
+
+**Operations Manual** 为 Agent 提供一套可长期沉淀的**记忆与知识库**：把约定、流程、结论与参考资料整理成**结构化工作手册**。你可以把它想象成一座**记忆宫殿**，或一本常在手边的**工作手册**——Agent 在需要时随时翻阅，核对事实、对齐规范、检索历史结论，而不必仅依赖当次会话的有限上下文。
+
+### English
+
+**Operations Manual** is a **long-term memory and knowledge base** for agents. It turns norms, workflows, conclusions, and references into a **structured operations manual**—a **memory palace** you can navigate, or a **handbook** agents can **open and browse anytime** to recall facts, align on standards, and look up past decisions, instead of relying only on the current session’s context.
 
 ---
 
@@ -65,7 +77,7 @@
 
 ### Operations Manual skill set
 
-This repository provides two **Operations Manual** skills for Cursor Agent: **read-only retrieval** and **hierarchical write / maintenance**. They share the same data root; use one or the other depending on user intent.
+The scenario above applies here as well: this repo implements that **long-term memory / handbook** idea as two concrete skills for Cursor Agent—**read-only retrieval** and **hierarchical write / maintenance**. They share the same data root; use one or the other depending on user intent.
 
 | Skill | Folder | Main doc |
 |-------|--------|----------|
